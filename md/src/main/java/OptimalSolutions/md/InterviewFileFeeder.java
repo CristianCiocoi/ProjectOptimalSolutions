@@ -111,7 +111,7 @@ public class InterviewFileFeeder {
 	public String toString() {
 		return "InterviewFileFeeder [nameA=" + nameA + ", surnameB=" + surnameB + ", mailC=" + mailC + ", genderD="
 				+ genderD + ", profileImageE=" + profileImageE + ", paymentMethodF=" + paymentMethodF
-				+ ", transactionsG=" + transactionsG + ", Belovo=" + h + ", i=" + i + ", cityJ=" + cityJ + "]";
+				+ ", transactionsG=" + transactionsG + ", h=" + h + ", i=" + i + ", cityJ=" + cityJ + "]";
 	}
 
 
