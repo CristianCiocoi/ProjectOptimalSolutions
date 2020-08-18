@@ -1,120 +1,118 @@
 package OptimalSolutions.md;
 
 public class InterviewFileFeeder {
-	private String nameA;
-	private String surnameB;
-	private String mailC;
-	private String genderD;
-	private String profileImageE;
-	private String paymentMethodF;
-	private String transactionsG;
-	private boolean h;
-	private boolean i;
-	private String cityJ;
+	private String columnA;
+	private String columnB;
+	private String columnC;
+	private String columnD;
+	private String columnE;
+	private String columnF;
+	private String columnG;
+	private String columnH;
+	private String columnI;
+	private String columnJ;
 	
-	public InterviewFileFeeder(String nameA, String surnameB, String mailC, String genderD, String profileImageE,
-			String paymentMethodF, String transactionsG, boolean h, boolean i, String cityJ) {
-		super();
-		this.nameA = nameA;
-		this.surnameB = surnameB;
-		this.mailC = mailC;
-		this.genderD = genderD;
-		this.profileImageE = profileImageE;
-		this.paymentMethodF = paymentMethodF;
-		this.transactionsG = transactionsG;
-		this.h = h;
-		this.i = i;
-		this.cityJ = cityJ;
+	public InterviewFileFeeder(String columnA, String columnB, String columnC, String columnD, String columnE,
+			String columnF, String columnG, String columnH, String columnI, String columnJ) {
+		this.columnA = columnA;
+		this.columnB = columnB;
+		this.columnC = columnC;
+		this.columnD = columnD;
+		this.columnE = columnE;
+		this.columnF = columnF;
+		this.columnG = columnG;
+		this.columnH = columnH;
+		this.columnI = columnI;
+		this.columnJ = columnJ;
 	}
 
-	public String getNameA() {
-		return nameA;
+	public String getColumnA() {
+		return columnA;
 	}
 
-	public void setNameA(String nameA) {
-		this.nameA = nameA;
+	public void setColumnA(String columnA) {
+		this.columnA = columnA;
 	}
 
-	public String getSurnameB() {
-		return surnameB;
+	public String getColumnB() {
+		return columnB;
 	}
 
-	public void setSurnameB(String surnameB) {
-		this.surnameB = surnameB;
+	public void setColumnB(String columnB) {
+		this.columnB = columnB;
 	}
 
-	public String getMailC() {
-		return mailC;
+	public String getColumnC() {
+		return columnC;
 	}
 
-	public void setMailC(String mailC) {
-		this.mailC = mailC;
+	public void setColumnC(String columnC) {
+		this.columnC = columnC;
 	}
 
-	public String getGenderD() {
-		return genderD;
+	public String getColumnD() {
+		return columnD;
 	}
 
-	public void setGenderD(String genderD) {
-		this.genderD = genderD;
+	public void setColumnD(String columnD) {
+		this.columnD = columnD;
 	}
 
-	public String getProfileImageE() {
-		return profileImageE;
+	public String getColumnE() {
+		return columnE;
 	}
 
-	public void setProfileImageE(String profileImageE) {
-		this.profileImageE = profileImageE;
+	public void setColumnE(String columnE) {
+		this.columnE = columnE;
 	}
 
-	public String getPaymentMethodF() {
-		return paymentMethodF;
+	public String getColumnF() {
+		return columnF;
 	}
 
-	public void setPaymentMethodF(String paymentMethodF) {
-		this.paymentMethodF = paymentMethodF;
+	public void setColumnF(String columnF) {
+		this.columnF = columnF;
 	}
 
-	public String getTransactionsG() {
-		return transactionsG;
+	public String getColumnG() {
+		return columnG;
 	}
 
-	public void setTransactionsG(String transactionsG) {
-		this.transactionsG = transactionsG;
+	public void setColumnG(String columnG) {
+		this.columnG = columnG;
 	}
 
-	public boolean isH() {
-		return h;
+	public String getColumnH() {
+		return columnH;
 	}
 
-	public void setH(boolean h) {
-		this.h = h;
+	public void setColumnH(String columnH) {
+		this.columnH = columnH;
 	}
 
-	public boolean isI() {
-		return i;
+	public String getColumnI() {
+		return columnI;
 	}
 
-	public void setI(boolean i) {
-		this.i = i;
+	public void setColumnI(String columnI) {
+		this.columnI = columnI;
 	}
 
-	public String getCityJ() {
-		return cityJ;
+	public String getColumnJ() {
+		return columnJ;
 	}
 
-	public void setCityJ(String cityJ) {
-		this.cityJ = cityJ;
+	public void setColumnJ(String columnJ) {
+		this.columnJ = columnJ;
 	}
 
 	@Override
 	public String toString() {
-		return "InterviewFileFeeder [nameA=" + nameA + ", surnameB=" + surnameB + ", mailC=" + mailC + ", genderD="
-				+ genderD + ", profileImageE=" + profileImageE + ", paymentMethodF=" + paymentMethodF
-				+ ", transactionsG=" + transactionsG + ", h=" + h + ", i=" + i + ", cityJ=" + cityJ + "]";
+		return "InterviewFileFeeder [columnA=" + columnA + ", columnB=" + columnB + ", columnC=" + columnC
+				+ ", columnD=" + columnD + ", columnE=" + columnE + ", columnF=" + columnF + ", columnG=" + columnG
+				+ ", columnH=" + columnH + ", columnI=" + columnI + ", columnJ=" + columnJ + "]";
 	}
 
 
 	
-
 }
