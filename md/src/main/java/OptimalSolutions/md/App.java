@@ -1,6 +1,5 @@
 package OptimalSolutions.md;
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,7 +16,7 @@ public class App
     private static final String CSV_BAD_DATA_FILE = "bad-data.csv";
     // to-do: <timestamp>
 
-	public static void main( String[] args ) throws IOException 
+	public static void main( String[] args ) 
     {
     	
         List<InterviewFileFeeder> records = readFromCSV(CSV_FILE_NAME);
@@ -32,12 +31,13 @@ public class App
     	*/
         
         
-        
+        /*
         //test
         FileWriter csvWriter = new FileWriter(CSV_BAD_DATA_FILE);
         for (InterviewFileFeeder record : records) {
             csvWriter.append(record);
         }
+        */
         
     }
     

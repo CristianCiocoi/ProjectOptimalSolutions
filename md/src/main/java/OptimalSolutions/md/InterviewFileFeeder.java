@@ -1,6 +1,6 @@
 package OptimalSolutions.md;
 
-public class InterviewFileFeeder implements CharSequence {
+public class InterviewFileFeeder {
 	private String columnA;
 	private String columnB;
 	private String columnC;
@@ -113,23 +113,6 @@ public class InterviewFileFeeder implements CharSequence {
 				+ ", columnH=" + columnH + ", columnI=" + columnI + ", columnJ=" + columnJ + "]";
 	}
 
-	@Override
-	public char charAt(int index) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int length() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public CharSequence subSequence(int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	
