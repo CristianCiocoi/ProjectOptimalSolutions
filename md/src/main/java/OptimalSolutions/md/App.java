@@ -2,6 +2,7 @@ package OptimalSolutions.md;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,8 +13,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import com.google.common.base.Splitter;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 public class App {
@@ -31,7 +36,9 @@ public class App {
 		List<InterviewFileFeeder> records = readFromCSV(CSV_FILE_NAME);
 		outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
 		writeHelper(outputfile);
-					
+		
+		
+		//parseCSVFileAsList();
 		System.out.println(countingBadData + countingGoodData + " records received");
 		System.out.println(countingGoodData + " of records successful");
 		System.out.println(countingBadData + " of records failed");
@@ -63,13 +70,13 @@ public class App {
 			while (line != null) {
 				// use string.split to load a string array with the values from each line of the
 				// file, using regex as the delimiter
-				System.out.println("aici e " + attributes[9]);
-				attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");// Elements with commas will be
+								
+				attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);// Elements with commas will be
 																					// double quoted
+				
+				//attributes = Splitter.on(CharMatcher.anyOf(",.\\")).omitEmptyStrings().split(description);
 
-				if(attributes[9] == null) {
-					attributes[9] = "";
-				}
+			
 				// maybe the problem could be in the split regex code that when it gets to the
 				// end it does not take the last elem in account
 
@@ -79,7 +86,7 @@ public class App {
 				 */
 
 				InterviewFileFeeder record = createRecord(attributes);
-				System.out.println(record);
+				//System.out.println(record);
 				// adding record into ArrayList
 				// System.out.println(field);
 				records.add(record);
@@ -101,6 +108,7 @@ public class App {
 		return records;
 	}
 
+	
 	private static InterviewFileFeeder createRecord(String[] metadata) throws IOException {
 
 		if (metadata.length < 10) {
@@ -111,7 +119,8 @@ public class App {
 			// record has only 1 is the last record which is blank
 
 			// writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
-			//countingBadData++;
+			//writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
+			countingBadData++;
 			return readingRecord(metadata);
 			// return readingRecord(metadata);
 		} else {
@@ -125,7 +134,6 @@ public class App {
 
 				// System.out.println(readingRecord(metadata));
 				writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
-				
 				countingBadData++;
 				return readingRecord(metadata);
 
