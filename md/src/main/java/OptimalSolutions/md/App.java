@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,12 +21,19 @@ public class App {
 	private static final String CSV_BAD_DATA_FILE = "bad-data-";
 	private static int countingBadData = 0;
 	private static int countingGoodData = 0;
-	private static int iteration = 0;
 
-	public static void main(String[] args) {
-
+	
+	static List<String[]> data = new ArrayList<String[]>();
+	static FileWriter outputfile;
+	
+	
+	public static void main(String[] args) throws IOException {
 		List<InterviewFileFeeder> records = readFromCSV(CSV_FILE_NAME);
-
+		outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
+		writeHelper(outputfile);
+		
+	
+		
 		System.out.println(countingBadData + countingGoodData + " records received");
 		System.out.println(countingGoodData + " of records successful");
 		System.out.println(countingBadData + " of records failed");
@@ -43,6 +49,7 @@ public class App {
 		 */
 
 	}
+
 
 	private static List<InterviewFileFeeder> readFromCSV(String fileName) {
 		List<InterviewFileFeeder> records = new ArrayList<InterviewFileFeeder>();
@@ -104,7 +111,7 @@ public class App {
 			// record has only 1 is the last record which is blank
 
 			// writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
-			countingBadData++;
+			//countingBadData++;
 			return null;
 			// return readingRecord(metadata);
 		} else {
@@ -118,6 +125,7 @@ public class App {
 
 				// System.out.println(readingRecord(metadata));
 				writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
+				
 				countingBadData++;
 				return readingRecord(metadata);
 
@@ -160,10 +168,6 @@ public class App {
 	}
 
 	private static void writeToCSV(String fileName, InterviewFileFeeder metadata) throws IOException {
-		FileWriter outputfile = new FileWriter(timeStampSetter(fileName));
-		CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER,
-				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-		try {
 
 			String columnA = metadata.getColumnA();
 			String columnB = metadata.getColumnB();
@@ -175,27 +179,24 @@ public class App {
 			String columnH = metadata.getColumnH();
 			String columnI = metadata.getColumnI();
 			String columnJ = metadata.getColumnJ();
+			
 			// Writing data to a csv file
-			String[] lines = new String[] { columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,
-					columnI, columnJ };
-			System.out.println(lines);
-			List<String[]> data = new ArrayList<String[]>();
+			String[] lines = new String[] { columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,	columnI, columnJ };
 
 			data.add(lines);
-
-			// Writing data to the csv file
-
-			writer.writeAll(data);
-
-			// writer.writeAll(result);
-
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
+	
+	private static void writeHelper(FileWriter outputfile) throws IOException {
+		CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER,
+				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+
+		writer.writeAll(data);
+
+		writer.close();
+	}
+	
 	private static String timeStampSetter(String stringToAddTime) {
 		Date now = new java.util.Date();
 		Timestamp current = new java.sql.Timestamp(now.getTime());
@@ -203,5 +204,4 @@ public class App {
 		stringToAddTime = stringToAddTime + timeStamp + ".csv";
 		return stringToAddTime;
 	}
-
 }
