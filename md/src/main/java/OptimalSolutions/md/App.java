@@ -4,22 +4,25 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import com.opencsv.CSVWriter;
 
 public class App {
 	private static final String CSV_FILE_NAME = "Inter.csv";
-	private static final String CSV_BAD_DATA_FILE = "bad-data";
-	// to-do: <timestamp>
+	private static final String CSV_BAD_DATA_FILE = "bad-data-";
 	private static int countingBadData = 0;
 	private static int countingGoodData = 0;
+	private static int iteration = 0;
 
 	public static void main(String[] args) {
 
@@ -57,6 +60,7 @@ public class App {
 
 				String[] attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");// Elements with commas will be
 																						// double quoted
+
 				// maybe the problem could be in the split regex code that when it gets to the
 				// end it does not take the last elem in account
 
@@ -81,6 +85,8 @@ public class App {
 			e.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+			// writeToCSV(CSV_BAD_DATA_FILE, readingRecord(attributes));//try to read the
+			// file directly in the write to csv method
 		}
 
 		return records;
@@ -110,6 +116,7 @@ public class App {
 					|| readingRecord(metadata).getColumnI().isEmpty()
 					|| readingRecord(metadata).getColumnJ().isEmpty()) {
 
+				// System.out.println(readingRecord(metadata));
 				writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
 				countingBadData++;
 				return readingRecord(metadata);
@@ -142,8 +149,6 @@ public class App {
 			String columnH = metadata[7];
 			String columnI = metadata[8];
 			String columnJ = metadata[9];
-			// System.out.println("columnJ " + columnJ);
-			// System.out.println(metadata.length);
 			// create and return InterviewFileFeeder of this metadata
 			return new InterviewFileFeeder(columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,
 					columnI, columnJ);
@@ -155,59 +160,47 @@ public class App {
 	}
 
 	private static void writeToCSV(String fileName, InterviewFileFeeder metadata) throws IOException {
+		FileWriter outputfile = new FileWriter(timeStampSetter(fileName));
+		CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER,
+				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+		try {
 
-		// System.out.println(metadata.getColumnA());
+			String columnA = metadata.getColumnA();
+			String columnB = metadata.getColumnB();
+			String columnC = metadata.getColumnC();
+			String columnD = metadata.getColumnD();
+			String columnE = metadata.getColumnE();
+			String columnF = metadata.getColumnF();
+			String columnG = metadata.getColumnG();
+			String columnH = metadata.getColumnH();
+			String columnI = metadata.getColumnI();
+			String columnJ = metadata.getColumnJ();
+			// Writing data to a csv file
+			String[] lines = new String[] { columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,
+					columnI, columnJ };
+			System.out.println(lines);
+			List<String[]> data = new ArrayList<String[]>();
 
-		String columnA = metadata.getColumnA();
-		String columnB = metadata.getColumnB();
-		String columnC = metadata.getColumnC();
-		String columnD = metadata.getColumnD();
-		String columnE = metadata.getColumnE();
-		String columnF = metadata.getColumnF();
-		String columnG = metadata.getColumnG();
-		String columnH = metadata.getColumnH();
-		String columnI = metadata.getColumnI();
-		String columnJ = metadata.getColumnJ();
+			data.add(lines);
 
-		/*
-		 * List<String> row =
-		 * Arrays.asList(columnA,columnB,columnC,columnD,columnE,columnF,columnG,columnH
-		 * ,columnI,columnJ);
-		 * 
-		 * FileWriter csvWriter = new FileWriter(fileName); csvWriter.append("A");
-		 * csvWriter.append(","); csvWriter.append("B"); csvWriter.append(",");
-		 * csvWriter.append("C"); csvWriter.append(","); csvWriter.append("D");
-		 * csvWriter.append(","); csvWriter.append("E"); csvWriter.append(",");
-		 * csvWriter.append("F"); csvWriter.append(","); csvWriter.append("G");
-		 * csvWriter.append(","); csvWriter.append("H"); csvWriter.append(",");
-		 * csvWriter.append("I"); csvWriter.append(","); csvWriter.append("J");
-		 * csvWriter.append("\n");
-		 * 
-		 * csvWriter.append(String.join(",", row)); csvWriter.append("\n");
-		 * 
-		 * 
-		 * 
-		 * csvWriter.flush(); csvWriter.close();
-		 */
+			// Writing data to the csv file
 
-		CSVWriter writer = new CSVWriter(new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE)));
-		// Writing data to a csv file
-		String line1[] = { columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH, columnI, columnJ };
-		// Writing data to the csv file
-		writer.writeNext(line1);
-		// Flushing data from writer to file
-		writer.flush();
-		// System.out.println("Data entered");
+			writer.writeAll(data);
 
+			// writer.writeAll(result);
+
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
-	
+
 	private static String timeStampSetter(String stringToAddTime) {
 		Date now = new java.util.Date();
 		Timestamp current = new java.sql.Timestamp(now.getTime());
-
-		stringToAddTime.concat(current.toString());
-		stringToAddTime.concat(".csv");
+		String timeStamp = new SimpleDateFormat("HH.mm.ss").format(current);
+		stringToAddTime = stringToAddTime + timeStamp + ".csv";
 		return stringToAddTime;
 	}
 
