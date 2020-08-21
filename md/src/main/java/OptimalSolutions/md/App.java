@@ -31,9 +31,7 @@ public class App {
 		List<InterviewFileFeeder> records = readFromCSV(CSV_FILE_NAME);
 		outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
 		writeHelper(outputfile);
-		
-	
-		
+					
 		System.out.println(countingBadData + countingGoodData + " records received");
 		System.out.println(countingGoodData + " of records successful");
 		System.out.println(countingBadData + " of records failed");
@@ -54,7 +52,8 @@ public class App {
 	private static List<InterviewFileFeeder> readFromCSV(String fileName) {
 		List<InterviewFileFeeder> records = new ArrayList<InterviewFileFeeder>();
 		Path pathToFile = Paths.get(fileName);
-
+		String[] attributes = new String[10];
+		
 		// create an instance of BufferedReader
 		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
 			// read the first line from the text file
@@ -64,10 +63,13 @@ public class App {
 			while (line != null) {
 				// use string.split to load a string array with the values from each line of the
 				// file, using regex as the delimiter
+				System.out.println("aici e " + attributes[9]);
+				attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");// Elements with commas will be
+																					// double quoted
 
-				String[] attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");// Elements with commas will be
-																						// double quoted
-
+				if(attributes[9] == null) {
+					attributes[9] = "";
+				}
 				// maybe the problem could be in the split regex code that when it gets to the
 				// end it does not take the last elem in account
 
@@ -77,7 +79,7 @@ public class App {
 				 */
 
 				InterviewFileFeeder record = createRecord(attributes);
-
+				System.out.println(record);
 				// adding record into ArrayList
 				// System.out.println(field);
 				records.add(record);
@@ -92,7 +94,7 @@ public class App {
 			e.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-			// writeToCSV(CSV_BAD_DATA_FILE, readingRecord(attributes));//try to read the
+			//writeToCSV(CSV_BAD_DATA_FILE, readingRecord(attributes));
 			// file directly in the write to csv method
 		}
 
@@ -102,8 +104,6 @@ public class App {
 	private static InterviewFileFeeder createRecord(String[] metadata) throws IOException {
 
 		if (metadata.length < 10) {
-			// System.out.println("record has only " + metadata.length);
-
 			// to do: Records that do not match the column count must be written to the
 			// bad-data-<timestamp>.csv file
 			// Records that are empty do not match the column count must be written to the
@@ -112,7 +112,7 @@ public class App {
 
 			// writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
 			//countingBadData++;
-			return null;
+			return readingRecord(metadata);
 			// return readingRecord(metadata);
 		} else {
 			// testing purposes
@@ -136,7 +136,7 @@ public class App {
 			// return this line
 
 			countingGoodData++;
-			return null;
+			return readingRecord(metadata);
 		}
 
 	}
