@@ -28,9 +28,23 @@ public class App {
 	
 	
 	public static void main(String[] args) throws IOException {
-		readFromCSV(CSV_FILE_NAME);
-		outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
-		writeHelper(outputfile);
+		
+		DBConnection dbConnection = new DBConnection();
+		if(dbConnection.open()) {
+			dbConnection.insert();
+			dbConnection.close();
+		}
+		
+
+		
+		
+		
+		
+		
+		
+		//readFromCSV(CSV_FILE_NAME);
+		//outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
+		//writeHelper(outputfile);
 		
 		System.out.println(countingBadData + countingGoodData + " records received");
 		System.out.println(countingGoodData + " of records successful");
