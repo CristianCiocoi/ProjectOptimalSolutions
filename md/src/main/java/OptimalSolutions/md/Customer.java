@@ -1,6 +1,6 @@
 package OptimalSolutions.md;
 
-public class InterviewFileFeeder {
+public class Customer {
 	private String columnA;
 	private String columnB;
 	private String columnC;
@@ -12,7 +12,7 @@ public class InterviewFileFeeder {
 	private String columnI;
 	private String columnJ;
 	
-	public InterviewFileFeeder(String columnA, String columnB, String columnC, String columnD, String columnE,
+	public Customer(String columnA, String columnB, String columnC, String columnD, String columnE,
 			String columnF, String columnG, String columnH, String columnI, String columnJ) {
 		this.columnA = columnA;
 		this.columnB = columnB;
