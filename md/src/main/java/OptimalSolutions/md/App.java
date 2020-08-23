@@ -56,13 +56,8 @@ public class App {
 				attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);// Elements with commas will be
 																					// double quoted
 
-
-				
-				
 				Customer customer = createRecord(attributes);
-				
-				//System.out.println(customer);//the records with commas are double quoted
-				
+								
 				customers.add(customer);
 
 				line = br.readLine();
@@ -83,7 +78,8 @@ public class App {
 
 		if (metadata.length < 10) {
 			countingBadData++;
-			//writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
+//			writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
+//			return null;
 			return readingRecord(metadata);
 		} else {
 			if (readingRecord(metadata).getColumnA().isEmpty() || readingRecord(metadata).getColumnB().isEmpty()
@@ -94,6 +90,7 @@ public class App {
 					|| readingRecord(metadata).getColumnJ().isEmpty()) {
 				countingBadData++;
 				writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
+//				return null;
 				return readingRecord(metadata);
 			}
 			countingGoodData++;
@@ -122,8 +119,7 @@ public class App {
 			return new Customer(columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,
 					columnI, columnJ);
 		} else {
-			System.out.println("index out of bounds " + metadata.length);
-			return null;
+			return new Customer();
 		}
 
 	}
@@ -150,8 +146,7 @@ public class App {
 
 	
 	private static void writeHelper(FileWriter outputfile) throws IOException {
-		CSVWriter writer = new CSVWriter(outputfile, ',', '"', '"', "\n"); //here the delimeter puts the data incorrectly in the columns        //solution: use super csv and then the regex delimiter pattern ,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)
-
+		CSVWriter writer = new CSVWriter(outputfile, ',', '"', '"', "\n"); 
 		
 		writer.writeAll(data);
 

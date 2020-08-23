@@ -12,6 +12,9 @@ public class Customer {
 	private String columnI;
 	private String columnJ;
 	
+	public Customer() {
+	}
+	
 	public Customer(String columnA, String columnB, String columnC, String columnD, String columnE,
 			String columnF, String columnG, String columnH, String columnI, String columnJ) {
 		this.columnA = columnA;
