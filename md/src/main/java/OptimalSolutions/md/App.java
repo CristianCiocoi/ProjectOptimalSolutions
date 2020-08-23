@@ -61,7 +61,7 @@ public class App {
 				
 				Customer customer = createRecord(attributes);
 				
-				System.out.println(customer);//the records with commas are double quoted
+				//System.out.println(customer);//the records with commas are double quoted
 				
 				customers.add(customer);
 
@@ -150,9 +150,9 @@ public class App {
 
 	
 	private static void writeHelper(FileWriter outputfile) throws IOException {
-		CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, //here the delimeter puts the data incorrectly in the columns
-				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);        //solution: use super csv and then the regex delimiter pattern ,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)
+		CSVWriter writer = new CSVWriter(outputfile, ',', '"', '"', "\n"); //here the delimeter puts the data incorrectly in the columns        //solution: use super csv and then the regex delimiter pattern ,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)
 
+		
 		writer.writeAll(data);
 
 		writer.close();
