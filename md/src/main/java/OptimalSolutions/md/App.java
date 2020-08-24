@@ -17,7 +17,7 @@ import java.util.List;
 import com.opencsv.CSVWriter;
 
 public class App {
-	private static final String CSV_FILE_NAME = "Inter.csv";
+	private static final String CSV_FILE_NAME = "Interview-task-data-osh.csv";
 	private static final String CSV_BAD_DATA_FILE = "bad-data-";
 	private static final String LOG_FILE = "Logs.txt";
 	private static int countingBadData = 0;
