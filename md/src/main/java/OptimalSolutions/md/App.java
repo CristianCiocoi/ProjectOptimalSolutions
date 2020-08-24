@@ -22,56 +22,53 @@ public class App {
 	private static int countingBadData = 0;
 	private static int countingGoodData = 0;
 
-	
 	static List<String[]> data = new ArrayList<String[]>();
 	static FileWriter outputfile;
-	
-	
-	public static void main(String[] args) throws IOException {
-		
-		DBConnection dbConnection = new DBConnection();
-		if(dbConnection.open()) {
-			dbConnection.insert();
-			dbConnection.close();
-		}
-		
 
-		
-		
-		
-		
-		
-		
-		//readFromCSV(CSV_FILE_NAME);
-		//outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
-		//writeHelper(outputfile);
-		
+	public static void main(String[] args) throws IOException {
+
+		List<Customer> records = readFromCSV(CSV_FILE_NAME);
+
+		DBConnection dbConnection = new DBConnection();
+		if (dbConnection.openConnection()) {
+			dbConnection.clearAll();
+			for (Customer record : records) {
+				if (record != null) dbConnection.insertCustomer(record);
+			}
+		}else {
+			dbConnection.closeConnection();
+		}
+
+		// outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
+		// writeHelper(outputfile);
+
 		System.out.println(countingBadData + countingGoodData + " records received");
 		System.out.println(countingGoodData + " of records successful");
 		System.out.println(countingBadData + " of records failed");
 	}
 
-
 	private static List<Customer> readFromCSV(String fileName) {
 		List<Customer> customers = new ArrayList<Customer>();
 		Path pathToFile = Paths.get(fileName);
 		String[] attributes = new String[10];
-		
+
 		// create an instance of BufferedReader
 		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
 			// read the first line from the text file
+			String headerLine = br.readLine();
 			String line = br.readLine();
-
 			// loop until all lines are read
 			while (line != null) {
+
+				
 				// use string.split to load a string array with the values from each line of the
 				// file, using regex as the delimiter
-								
+
 				attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);// Elements with commas will be
 																					// double quoted
 
 				Customer customer = createRecord(attributes);
-								
+
 				customers.add(customer);
 
 				line = br.readLine();
@@ -87,14 +84,11 @@ public class App {
 		return customers;
 	}
 
-	
 	private static Customer createRecord(String[] metadata) throws IOException {
 
 		if (metadata.length < 10) {
 			countingBadData++;
-//			writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
-//			return null;
-			return readingRecord(metadata);
+			return null;
 		} else {
 			if (readingRecord(metadata).getColumnA().isEmpty() || readingRecord(metadata).getColumnB().isEmpty()
 					|| readingRecord(metadata).getColumnC().isEmpty() || readingRecord(metadata).getColumnD().isEmpty()
@@ -104,8 +98,7 @@ public class App {
 					|| readingRecord(metadata).getColumnJ().isEmpty()) {
 				countingBadData++;
 				writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
-//				return null;
-				return readingRecord(metadata);
+				return null;
 			}
 			countingGoodData++;
 			return readingRecord(metadata);
@@ -130,8 +123,8 @@ public class App {
 			String columnI = metadata[8];
 			String columnJ = metadata[9];
 			// create and return InterviewFileFeeder of this metadata
-			return new Customer(columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,
-					columnI, columnJ);
+			return new Customer(columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH, columnI,
+					columnJ);
 		} else {
 			return new Customer();
 		}
@@ -140,33 +133,32 @@ public class App {
 
 	private static void writeToCSV(String fileName, Customer metadata) throws IOException {
 
-			String columnA = metadata.getColumnA();
-			String columnB = metadata.getColumnB();
-			String columnC = metadata.getColumnC();
-			String columnD = metadata.getColumnD();
-			String columnE = metadata.getColumnE();
-			String columnF = metadata.getColumnF();
-			String columnG = metadata.getColumnG();
-			String columnH = metadata.getColumnH();
-			String columnI = metadata.getColumnI();
-			String columnJ = metadata.getColumnJ();
-			
-			// Writing data to a csv file
-			String[] lines = new String[] { columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH,	columnI, columnJ };
+		String columnA = metadata.getColumnA();
+		String columnB = metadata.getColumnB();
+		String columnC = metadata.getColumnC();
+		String columnD = metadata.getColumnD();
+		String columnE = metadata.getColumnE();
+		String columnF = metadata.getColumnF();
+		String columnG = metadata.getColumnG();
+		String columnH = metadata.getColumnH();
+		String columnI = metadata.getColumnI();
+		String columnJ = metadata.getColumnJ();
 
-			data.add(lines);
-		
+		String[] lines = new String[] { columnA, columnB, columnC, columnD, columnE, columnF, columnG, columnH, columnI,
+				columnJ };
+
+		data.add(lines);
+
 	}
 
-	
 	private static void writeHelper(FileWriter outputfile) throws IOException {
-		CSVWriter writer = new CSVWriter(outputfile, ',', '"', '"', "\n"); 
-		
+		CSVWriter writer = new CSVWriter(outputfile, ',', '"', '"', "\n");
+
 		writer.writeAll(data);
 
 		writer.close();
 	}
-	
+
 	private static String timeStampSetter(String stringToAddTime) {
 		Date now = new java.util.Date();
 		Timestamp current = new java.sql.Timestamp(now.getTime());
@@ -174,4 +166,6 @@ public class App {
 		stringToAddTime = stringToAddTime + timeStamp + ".csv";
 		return stringToAddTime;
 	}
+	
+	
 }

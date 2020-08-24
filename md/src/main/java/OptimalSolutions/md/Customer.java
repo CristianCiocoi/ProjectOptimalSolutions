@@ -111,7 +111,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "InterviewFileFeeder [columnA=" + columnA + ", columnB=" + columnB + ", columnC=" + columnC
+		return "Customer [columnA=" + columnA + ", columnB=" + columnB + ", columnC=" + columnC
 				+ ", columnD=" + columnD + ", columnE=" + columnE + ", columnF=" + columnF + ", columnG=" + columnG
 				+ ", columnH=" + columnH + ", columnI=" + columnI + ", columnJ=" + columnJ + "]";
 	}

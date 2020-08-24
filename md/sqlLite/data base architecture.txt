@@ -1,5 +1,22 @@
-CREATE TABLE customers(
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name VARCHAR(50),
-surname VARCHAR(50),
-email VARCHAR(50));
+CREATE TABLE "customers" (
+	"customerId"	INTEGER,
+	"name"	TEXT,
+	"surname"	TEXT,
+	"email"	TEXT,
+	"gender"	TEXT,
+	"selfImg"	BLOB,
+	PRIMARY KEY("customerId" AUTOINCREMENT)
+);
+
+
+CREATE TABLE "companies" (
+	"companyId"	INTEGER,
+	"paymentService"	TEXT,
+	"transactionFee"	TEXT,
+	"columnH"	TEXT,
+	"columnI"	TEXT,
+	"transactionCity"	TEXT,
+	"customerId"	INTEGER,
+	FOREIGN KEY("customerId") REFERENCES "customers"("customerId"),
+	PRIMARY KEY("companyId" AUTOINCREMENT)
+);
