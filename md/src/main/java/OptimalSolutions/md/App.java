@@ -105,7 +105,7 @@ public class App {
 					|| customerRecord(metadata).getColumnI().isEmpty()
 					|| customerRecord(metadata).getColumnJ().isEmpty()) {
 				countingBadData++;
-				cachingData(CSV_BAD_DATA_FILE, customerRecord(metadata));
+				cachingData(customerRecord(metadata));
 				return null;
 			}
 			countingGoodData++;
@@ -139,7 +139,7 @@ public class App {
 
 	}
 
-	private static void cachingData(String fileName, Customer metadata) throws IOException {
+	private static void cachingData(Customer metadata) throws IOException {
 
 		String columnA = metadata.getColumnA();
 		String columnB = metadata.getColumnB();
