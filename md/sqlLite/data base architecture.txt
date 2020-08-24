@@ -4,19 +4,11 @@ CREATE TABLE "customers" (
 	"surname"	TEXT,
 	"email"	TEXT,
 	"gender"	TEXT,
-	"selfImg"	BLOB,
-	PRIMARY KEY("customerId" AUTOINCREMENT)
-);
-
-
-CREATE TABLE "companies" (
-	"companyId"	INTEGER,
+	"selfImg"	TEXT,
 	"paymentService"	TEXT,
 	"transactionFee"	TEXT,
 	"columnH"	TEXT,
 	"columnI"	TEXT,
 	"transactionCity"	TEXT,
-	"customerId"	INTEGER,
-	FOREIGN KEY("customerId") REFERENCES "customers"("customerId"),
-	PRIMARY KEY("companyId" AUTOINCREMENT)
+	PRIMARY KEY("customerId" AUTOINCREMENT)
 );

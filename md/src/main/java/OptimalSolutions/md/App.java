@@ -19,32 +19,37 @@ import com.opencsv.CSVWriter;
 public class App {
 	private static final String CSV_FILE_NAME = "Inter.csv";
 	private static final String CSV_BAD_DATA_FILE = "bad-data-";
+	private static final String LOG_FILE = "Logs.txt";
 	private static int countingBadData = 0;
 	private static int countingGoodData = 0;
 
 	static List<String[]> data = new ArrayList<String[]>();
-	static FileWriter outputfile;
+	static FileWriter badDataFile;
 
 	public static void main(String[] args) throws IOException {
 
 		List<Customer> records = readFromCSV(CSV_FILE_NAME);
+		managingDB(records);
 
+		badDataFile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
+		writeToCSV(badDataFile);
+
+		recordLogs(LOG_FILE, countingGoodData, countingBadData);
+
+		System.out.println("Done");
+	}
+
+	private static void managingDB(List<Customer> records) {
 		DBConnection dbConnection = new DBConnection();
 		if (dbConnection.openConnection()) {
 			dbConnection.clearAll();
 			for (Customer record : records) {
-				if (record != null) dbConnection.insertCustomer(record);
+				if (record != null)
+					dbConnection.insertCustomer(record);
 			}
-		}else {
+		} else {
 			dbConnection.closeConnection();
 		}
-
-		// outputfile = new FileWriter(timeStampSetter(CSV_BAD_DATA_FILE));
-		// writeHelper(outputfile);
-
-		System.out.println(countingBadData + countingGoodData + " records received");
-		System.out.println(countingGoodData + " of records successful");
-		System.out.println(countingBadData + " of records failed");
 	}
 
 	private static List<Customer> readFromCSV(String fileName) {
@@ -54,19 +59,19 @@ public class App {
 
 		// create an instance of BufferedReader
 		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
+
 			// read the first line from the text file
 			String headerLine = br.readLine();
+			System.out.println("Headers: " + headerLine);
 			String line = br.readLine();
+
 			// loop until all lines are read
 			while (line != null) {
 
-				
 				// use string.split to load a string array with the values from each line of the
 				// file, using regex as the delimiter
-
 				attributes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);// Elements with commas will be
 																					// double quoted
-
 				Customer customer = createRecord(attributes);
 
 				customers.add(customer);
@@ -90,23 +95,26 @@ public class App {
 			countingBadData++;
 			return null;
 		} else {
-			if (readingRecord(metadata).getColumnA().isEmpty() || readingRecord(metadata).getColumnB().isEmpty()
-					|| readingRecord(metadata).getColumnC().isEmpty() || readingRecord(metadata).getColumnD().isEmpty()
-					|| readingRecord(metadata).getColumnE().isEmpty() || readingRecord(metadata).getColumnF().isEmpty()
-					|| readingRecord(metadata).getColumnG().isEmpty() || readingRecord(metadata).getColumnH().isEmpty()
-					|| readingRecord(metadata).getColumnI().isEmpty()
-					|| readingRecord(metadata).getColumnJ().isEmpty()) {
+			if (customerRecord(metadata).getColumnA().isEmpty() || customerRecord(metadata).getColumnB().isEmpty()
+					|| customerRecord(metadata).getColumnC().isEmpty()
+					|| customerRecord(metadata).getColumnD().isEmpty()
+					|| customerRecord(metadata).getColumnE().isEmpty()
+					|| customerRecord(metadata).getColumnF().isEmpty()
+					|| customerRecord(metadata).getColumnG().isEmpty()
+					|| customerRecord(metadata).getColumnH().isEmpty()
+					|| customerRecord(metadata).getColumnI().isEmpty()
+					|| customerRecord(metadata).getColumnJ().isEmpty()) {
 				countingBadData++;
-				writeToCSV(CSV_BAD_DATA_FILE, readingRecord(metadata));
+				cachingData(CSV_BAD_DATA_FILE, customerRecord(metadata));
 				return null;
 			}
 			countingGoodData++;
-			return readingRecord(metadata);
+			return customerRecord(metadata);
 		}
 
 	}
 
-	private static Customer readingRecord(String[] metadata) {
+	private static Customer customerRecord(String[] metadata) {
 
 		if (!(metadata.length < 10)) {
 
@@ -131,7 +139,7 @@ public class App {
 
 	}
 
-	private static void writeToCSV(String fileName, Customer metadata) throws IOException {
+	private static void cachingData(String fileName, Customer metadata) throws IOException {
 
 		String columnA = metadata.getColumnA();
 		String columnB = metadata.getColumnB();
@@ -151,8 +159,8 @@ public class App {
 
 	}
 
-	private static void writeHelper(FileWriter outputfile) throws IOException {
-		CSVWriter writer = new CSVWriter(outputfile, ',', '"', '"', "\n");
+	private static void writeToCSV(FileWriter badDataFile) throws IOException {
+		CSVWriter writer = new CSVWriter(badDataFile, ',', '"', '"', "\n");
 
 		writer.writeAll(data);
 
@@ -166,6 +174,19 @@ public class App {
 		stringToAddTime = stringToAddTime + timeStamp + ".csv";
 		return stringToAddTime;
 	}
-	
-	
+
+	private static void recordLogs(String logFile, int goodDataCounter, int badDataCounter) {
+		int recordsReceived = goodDataCounter + badDataCounter;
+		try {
+			FileWriter myWriter = new FileWriter(logFile);
+			myWriter.write(recordsReceived + " records received\n");
+			myWriter.write(goodDataCounter + " records successful\n");
+			myWriter.write(badDataCounter + " records failed");
+			myWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 }

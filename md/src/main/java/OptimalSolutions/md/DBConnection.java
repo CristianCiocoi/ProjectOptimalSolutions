@@ -1,15 +1,13 @@
 package OptimalSolutions.md;
+
 import java.sql.*;
 
 public class DBConnection {
 	private static final String URL = "jdbc:sqlite:customers.db";
 	private Connection connection;
-	
-	//Don't create the PreparedStatement in the loop. Create it once and reuse it.
-	private String insertInCustomersTalbe = "INSERT INTO customers (name, surname, email, gender, selfImg) VALUES (?, ?, ?, ?, ?)"; 
-	
-	
-	
+
+	private String insertInCustomersTable = "INSERT INTO customers (name, surname, email, gender, selfImg, paymentService, transactionFee, columnH, columnI, transactionCity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	public boolean openConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -24,66 +22,46 @@ public class DBConnection {
 	}
 
 	public void insertCustomer(Customer metadata) {
-		
+
 		String name = metadata.getColumnA();
 		String surname = metadata.getColumnB();
 		String email = metadata.getColumnC();
 		String gender = metadata.getColumnD();
 		String selfImg = metadata.getColumnE();
-		
+		String paymentService = metadata.getColumnF();
+		String transactionFee = metadata.getColumnG();
+		String columnH = metadata.getColumnH();
+		String columnI = metadata.getColumnI();
+		String transactionCity = metadata.getColumnJ();
 
-		try (PreparedStatement pstmt = connection.prepareStatement(insertInCustomersTalbe)){
+		try (PreparedStatement pstmt = connection.prepareStatement(insertInCustomersTable)) {
 			pstmt.setString(1, name);
 			pstmt.setString(2, surname);
 			pstmt.setString(3, email);
 			pstmt.setString(4, gender);
-			pstmt.setString(5, selfImg);//selfImg dont forget that it is of type BLOB
+			pstmt.setString(5, selfImg);
+			pstmt.setString(6, paymentService);
+			pstmt.setString(7, transactionFee);
+			pstmt.setString(8, columnH);
+			pstmt.setString(9, columnI);
+			pstmt.setString(10, transactionCity);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
-	public void clearAll() {
 
+	public void clearAll() {
 		String clearSequence = "DELETE FROM SQLITE_SEQUENCE";
 		String clearCustomers = "DELETE FROM customers";
-		try (Statement stmt  = connection.createStatement()){
+		try (Statement stmt = connection.createStatement()) {
 			stmt.executeUpdate(clearSequence);
 			stmt.executeUpdate(clearCustomers);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	/*
-	CREATE TABLE suppliers (
-			supplier_id integer PRIMARY KEY,
-			supplier_name text NOT NULL,
-			group_id integer NOT NULL
-		);
-
-		CREATE TABLE supplier_groups (
-			group_id integer PRIMARY KEY,
-			group_name text NOT NULL
-		);
-
-	CREATE TABLE suppliers (
-	    supplier_id   INTEGER PRIMARY KEY,
-	    supplier_name TEXT    NOT NULL,
-	    group_id      INTEGER NOT NULL,
-	    FOREIGN KEY (group_id)
-	       REFERENCES supplier_groups (group_id) 
-	);
-	
-	INSERT INTO supplier_groups (group_name)
-	VALUES
-	   ('Domestic'),
-	   ('Global'),
-	   ('One-Time');
-	
-	INSERT INTO suppliers (supplier_name, group_id)
-	VALUES ('HP', 2);
-	*/
 
 	public void closeConnection() {
 		try {
@@ -92,4 +70,5 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
+
 }
