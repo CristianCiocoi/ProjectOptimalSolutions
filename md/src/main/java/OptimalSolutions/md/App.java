@@ -28,6 +28,9 @@ public class App {
 
 	public static void main(String[] args) throws IOException {
 
+		long startTime = System.nanoTime();
+
+        
 		List<Customer> records = readFromCSV(CSV_FILE_NAME);
 		managingDB(records);
 
@@ -35,8 +38,8 @@ public class App {
 		writeToCSV(badDataFile);
 
 		recordLogs(LOG_FILE, countingGoodData, countingBadData);
-
-		System.out.println("Done");
+		long estimatedTime = System.nanoTime() - startTime;
+		System.out.println("Task took " + estimatedTime/ 10E8 + " seconds");
 	}
 
 	private static void managingDB(List<Customer> records) {
@@ -186,7 +189,6 @@ public class App {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }
